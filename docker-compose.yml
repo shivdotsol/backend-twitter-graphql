@@ -1,0 +1,16 @@
+
+services:
+  postgres:
+    image: postgres
+    container_name: twitter-gql-db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: easypeasy
+      POSTGRES_DB: default_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
