@@ -1,6 +1,7 @@
 import express from "express";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express5";
+import { prismaClient } from "./lib/db.js";
 
 async function init() {
     const app = express();
@@ -11,11 +12,40 @@ async function init() {
                 hello: String
                 say(name: String): String
             }
+            type Mutation{
+                createUser(firstName: String!, lastName: String!, email: String!, password: String!): Boolean
+            }
         `,
         resolvers: {
             Query: {
                 hello: () => "hello from apollo gqpl",
                 say: (_, { name }: { name: string }) => `Hello ${name}`,
+            },
+            Mutation: {
+                createUser: async (
+                    _,
+                    {
+                        firstName,
+                        lastName,
+                        email,
+                        password,
+                    }: {
+                        firstName: string;
+                        lastName: string;
+                        email: string;
+                        password: string;
+                    }
+                ) => {
+                    await prismaClient.user.create({
+                        data: {
+                            email,
+                            firstName,
+                            lastName,
+                            password,
+                            salt: "placeholder_salt",
+                        },
+                    });
+                },
             },
         },
     });
