@@ -1,3 +1,3 @@
 export const queries = `
-    getUserById(id: ID!): String
+    getAuthToken(email: String!, password: String!): String
 `;
