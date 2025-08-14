@@ -55,6 +55,14 @@ class UserService {
         return token;
     }
 
+    public static verifyAuthToken(token: string) {
+        return jwt.verify(token, JWT_SECRET);
+    }
+
+    public static getUserById(id: string) {
+        return prismaClient.user.findUnique({ where: { id } });
+    }
+
     private static getUserByEmail(email: string) {
         return prismaClient.user.findUnique({ where: { email } });
     }

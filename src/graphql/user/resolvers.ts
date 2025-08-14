@@ -9,6 +9,12 @@ const queries = {
         const token = await UserService.getAuthToken(payload);
         return token;
     },
+    getCurrentLoggedInUser: async (_: any, __: any, context: any) => {
+        if (context && context.user) {
+            const user = await UserService.getUserById(context.user.id);
+            return user;
+        }
+    },
 };
 const mutations = {
     createUser: async (_: string, payload: CreateUserPayload) => {
